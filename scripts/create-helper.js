@@ -12,39 +12,39 @@ const movie = require("../models/HelpContact");
 mongoose.Promise = global.Promise;
 
 mongoose
-  .connect("mongodb://localhost:27017/movis", {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  })
-  .then(async () => {
-    //4 hacemos lo que queramos
-    /*
-             name: { type: String, require: true },
-            phone: { type: String, require: true },
-            email: { type: String, unique: true },
-            description: { type: String, default: "Hola contacta conmigo a traves de mi numero de telefono" },
-           Helper: { tyoe: String, require: true },
-            */
+    .connect("mongodb://localhost:27017/movis", {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    })
+    .then(async() => {
+        //4 hacemos lo que queramos
+        /*
+                 name: { type: String, require: true },
+                phone: { type: String, require: true },
+                email: { type: String, unique: true },
+                description: { type: String, default: "Hola contacta conmigo a traves de mi numero de telefono" },
+               Helper: { tyoe: String, require: true },
+                */
 
-    for (var i = 1; i < 101; i++) {
-      let newUser = new movie({
-        name: `Alberto Gomez Toribio ${i}`,
-        phone: i,
-        email: `albertogomezt${i}@donext-mail.com`,
-        description: "Hola contacta conmigo a traves de mi numero de telefono",
-        Helper: "Hola, me llamo Alberto",
-      });
+        for (var i = 1; i < 101; i++) {
+            let newUser = new movie({
+                name: `Alberto Gomez Toribio ${i}`,
+                phone: i,
+                email: `albertogomezt${i}@donext-mail.com`,
+                description: "Hola contacta conmigo a traves de mi numero de telefono o email",
+                Helper: "Hola, me llamo Alberto",
+            });
 
-      await newUser.save();
-      console.log(newUser.name);
-    }
+            await newUser.save();
+            console.log(newUser.name);
+        }
 
-    console.log("Proceso de creación de usuarios terminada");
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.log(`error al conectar con mongo ${err}`);
-  });
+        console.log("Proceso de creación de usuarios terminada");
+        process.exit(0);
+    })
+    .catch((err) => {
+        console.log(`error al conectar con mongo ${err}`);
+    });
 
 //6 para lanzar el script, nos apuntamos el nombre y ubicación de este archivo que hemos creado, por ejemplo este esta en scripts/create-users.js
 //y nos vamos al archivo package.json

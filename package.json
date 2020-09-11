@@ -10,7 +10,7 @@
         "retos": "node ./scripts/create-deals",
         "helpers": "node ./scripts/create-helper"
     },
-    "author": "",
+    "author": "Joel Gutierrez",
     "license": "ISC",
     "dependencies": {
         "body-parser": "^1.19.0",
