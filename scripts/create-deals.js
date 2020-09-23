@@ -29,15 +29,17 @@ mongoose
 
         for (var i = 1; i < 101; i++) {
             let newDeal = new deals({
-                name: `reto ${i}`,
-                description: `este reot es el ${i}`,
+                name: `trivial ${i}`,
+                description: `juege el trivial ${i}`,
                 image: "https://www.google.com",
                 activate: funtremdom.getRandomArbitrary(0, 2),
                 award: `${i + 1} puntos`,
+                urlHtml : "https://www.google.com"
+                
             });
 
             await newDeal.save();
-            console.log(newDeal.name);
+            console.log(newDeal.name , newDeal.description);
         }
 
         console.log("Proceso de creación de usuarios terminada");

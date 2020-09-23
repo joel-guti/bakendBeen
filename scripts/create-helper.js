@@ -25,18 +25,33 @@ mongoose
                 description: { type: String, default: "Hola contacta conmigo a traves de mi numero de telefono" },
                Helper: { tyoe: String, require: true },
                 */
+const arr = ['donaxt-mail.com', 'taddoo.com', 'tickendymail.com', 'zaramatre_mail.com',
+'bankia-mail.es', 'Hubtype.com', 'multiverseconputing.com', 'singicat-mail.com', 'dain-mail.com'];
+const removeRandom = (array) => {
+   while(array.length){
+      const random = Math.floor(Math.random() * array.length);
+      const el = array.splice(random, 1)[0];
+      console.log(el);
+   }
+};
+
+
 
         for (var i = 1; i < 101; i++) {
-            let newUser = new movie({
+           let domain = removeRandom(arr)
+        
+            let newHelper = new movie({
                 name: `Alberto Gomez Toribio ${i}`,
                 phone: i,
-                email: `albertogomezt${i}@donext-mail.com`,
+                email: `albertogomezt${i}@${domain}`,
                 description: "Hola contacta conmigo a traves de mi numero de telefono o email",
                 Helper: "Hola, me llamo Alberto",
             });
 
-            await newUser.save();
-            console.log(newUser.name);
+            await newHelper.save();
+            console.log(newHelper.name);
+           
+            console.log(newHelper.email)
         }
 
         console.log("Proceso de creación de usuarios terminada");

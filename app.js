@@ -76,7 +76,7 @@ app.get("/deals", async(req, res) => {
         retos,
     });
 });
-app.post();
+//app.post();
 app.post("/usercreate", async(req, res) => {
     let body = req.body;
     let newuser = await userSchema.create(body);
@@ -87,14 +87,14 @@ app.post("/usercreate", async(req, res) => {
     newuser.save();
     console.log(newuser);
 });
-app.post("/usercreate", async(req, res) => {
+app.post("/login", async(req, res) => {
     let body = req.body;
-    let newuser = await userSchema.findOne(body);
+    let newuser = await userSchema.findOne(body).select(" -_id email password");
     res.send({
         ok: true,
         newuser,
     });
-    newuser.save();
+
     console.log(newuser);
 });
 app.get("/user", async(req, res) => {

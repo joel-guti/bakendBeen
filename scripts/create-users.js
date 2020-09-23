@@ -21,17 +21,26 @@ mongoose
         //4 hacemos lo que queramos
 
         for (var i = 1; i < 100; i++) {
+            let domaind = User.find().count()
             let newUser = new User({
-                username: `nombre_${i}`,
-                email: `users${i}@cimema.com`,
+                username: `nombre_${domaind + 1}`,
+                email: `users${domaind + 1}@cimema.com`,
                 password: `1234`,
                 points: aleatorio.getRandomArbitrary(0, 8001),
             });
+            
             let name = newUser.email;
             let pointis = newUser.points
+         
+
+
+
+            
+
 
             console.log(name);
             console.log(pointis)
+            console.log()
 
             await newUser.save();
         }
