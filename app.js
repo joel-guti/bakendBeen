@@ -34,6 +34,7 @@ const moviesSchema = require("./models/Movies");
 const userSchema = require("./models/User");
 const dealSchema = require("./models/Deals");
 const helper = require("./models/HelpContact");
+
 app.get("/helper", async(req, res) => {
     let query = req.query;
 
@@ -49,7 +50,7 @@ app.get("/helper", async(req, res) => {
         .find()
         .limit(elementos)
         .skip(skip)
-        .select("-_id name  email  phone -__v");
+        .select("-_id name  email  phone");
     console.log(ayudantes);
     res.send({
         ok: true,
@@ -97,6 +98,7 @@ app.post("/login", async(req, res) => {
 
     console.log(newuser);
 });
+
 app.get("/user", async(req, res) => {
     let user = await userSchema.find;
     res.send({

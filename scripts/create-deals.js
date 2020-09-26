@@ -39,7 +39,7 @@ mongoose
             });
 
             await newDeal.save();
-            console.log(newDeal.name , newDeal.description);
+            console.log(newDeal.name ,newDeal.description);
         }
 
         console.log("Proceso de creación de usuarios terminada");

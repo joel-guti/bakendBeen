@@ -43,6 +43,7 @@ mongoose
         trailerurl: `https://firebasestorage.googleapis.com/v0/b/donext-collections.appspot.com/o/Mala_Suerte__Mickey_Mouse_hd.mp4?alt=media&token=36b5998f-dbc0-41f5-bdc4-751dbd05f508`,
         actors: "paco leon , Santiago segura , Rosa maria sarda",
       });
+      
 
       await newUser.save();
       console.log(newUser.director, newUser.titele, newUser.premiereage);

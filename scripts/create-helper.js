@@ -19,39 +19,54 @@ mongoose
     .then(async() => {
         //4 hacemos lo que queramos
         /*
-                 name: { type: String, require: true },
-                phone: { type: String, require: true },
-                email: { type: String, unique: true },
-                description: { type: String, default: "Hola contacta conmigo a traves de mi numero de telefono" },
-               Helper: { tyoe: String, require: true },
-                */
-const arr = ['donaxt-mail.com', 'taddoo.com', 'tickendymail.com', 'zaramatre_mail.com',
-'bankia-mail.es', 'Hubtype.com', 'multiverseconputing.com', 'singicat-mail.com', 'dain-mail.com'];
-const removeRandom = (array) => {
-   while(array.length){
-      const random = Math.floor(Math.random() * array.length);
-      const el = array.splice(random, 1)[0];
-      console.log(el);
-   }
-};
+                                                 name: { type: String, require: true },
+                                                phone: { type: String, require: true },
+                                                email: { type: String, unique: true },
+                                                description: { type: String, default: "Hola contacta conmigo a traves de mi numero de telefono" },
+                                               Helper: { tyoe: String, require: true },
+                                                */
 
+        const removeRandom = (array) => {
+            while (array.length) {
+                const random = Math.floor(Math.random() * array.length);
+                const el = array.splice(random, 1)[0];
+                console.log(el);
+            }
+        };
 
+        //teniendo un array var a = ["a" , "b"]
+        //sacamos un random de 0 a longitud del array o sea entre 0 y el array.length
 
+        const arr = [
+            "donaxt-mail.com",
+            "taddoo.com",
+            "tickendymail.com",
+            "zaramatre_mail.com",
+            "bankia.com",
+            "Hubtype.com",
+            "multiverseconputing.com",
+            "singicat-mail.com",
+            "dain-mail.com",
+        ];
+
+        function randomInteger(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
         for (var i = 1; i < 101; i++) {
-           let domain = removeRandom(arr)
-        
+            let domain = arr[randomInteger(0, arr.length)];
+
             let newHelper = new movie({
                 name: `Alberto Gomez Toribio ${i}`,
                 phone: i,
-                email: `albertogomezt${i}@${domain}`,
+                email: `agomez${i}@${domain}`,
                 description: "Hola contacta conmigo a traves de mi numero de telefono o email",
                 Helper: "Hola, me llamo Alberto",
             });
 
             await newHelper.save();
             console.log(newHelper.name);
-           
-            console.log(newHelper.email)
+
+            console.log(newHelper.email);
         }
 
         console.log("Proceso de creación de usuarios terminada");
