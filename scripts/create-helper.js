@@ -19,12 +19,12 @@ mongoose
     .then(async() => {
         //4 hacemos lo que queramos
         /*
-                                                 name: { type: String, require: true },
-                                                phone: { type: String, require: true },
-                                                email: { type: String, unique: true },
-                                                description: { type: String, default: "Hola contacta conmigo a traves de mi numero de telefono" },
-                                               Helper: { tyoe: String, require: true },
-                                                */
+                                                     name: { type: String, require: true },
+                                                    phone: { type: String, require: true },
+                                                    email: { type: String, unique: true },
+                                                    description: { type: String, default: "Hola contacta conmigo a traves de mi numero de telefono" },
+                                                   Helper: { tyoe: String, require: true },
+                                                    */
 
         const removeRandom = (array) => {
             while (array.length) {
@@ -47,6 +47,7 @@ mongoose
             "multiverseconputing.com",
             "singicat-mail.com",
             "dain-mail.com",
+            "UCapture.com",
         ];
 
         function randomInteger(min, max) {
@@ -62,7 +63,11 @@ mongoose
                 description: "Hola contacta conmigo a traves de mi numero de telefono o email",
                 Helper: "Hola, me llamo Alberto",
             });
-
+            if ((domain = "bankia.com")) {
+                console.log("Es el banco español (Bankia)");
+            } else {
+                console.log("es una stutup");
+            }
             await newHelper.save();
             console.log(newHelper.name);
 

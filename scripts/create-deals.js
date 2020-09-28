@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 
 //5 para este ejemplo vamos a crear usuarios automaticamente por lo que importamos el modelo de usuarios
 
-const deals = require("../models/Deals");
+const deal = require("../models/Deals");
 const funtremdom = require("../functions/ramdom");
 
 mongoose.Promise = global.Promise;
@@ -28,18 +28,17 @@ mongoose
         //4 hacemos lo que queramos
 
         for (var i = 1; i < 101; i++) {
-            let newDeal = new deals({
+            let newDeal = new deal({
                 name: `trivial ${i}`,
                 description: `juege el trivial ${i}`,
                 image: "https://www.google.com",
                 activate: funtremdom.getRandomArbitrary(0, 2),
                 award: `${i + 1} puntos`,
-                urlHtml : "https://www.google.com"
-                
+                urlHtml: "https://view.genial.ly/5eeb62fa52b9a00d905b86ad/game-trivial-aoo",
             });
 
             await newDeal.save();
-            console.log(newDeal.name ,newDeal.description);
+            console.log(newDeal.name, newDeal.description);
         }
 
         console.log("Proceso de creación de usuarios terminada");

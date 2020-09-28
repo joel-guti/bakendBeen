@@ -57,6 +57,14 @@ app.get("/helper", async(req, res) => {
         ayudantes,
     });
 });
+app.get("/id", async(req, res) => {
+    let findId = await userSchema.find().select("_id username email");
+    console.log(findId);
+    res.send({
+        ok: true,
+        findId,
+    });
+});
 
 app.post("user/:alias", async(req, res) => {
     let params = req.params;
@@ -72,7 +80,7 @@ app.post("user/:alias", async(req, res) => {
 app.get("/deals", async(req, res) => {
     let retos = await dealSchema
         .find({ activate: true })
-        .select("-_id -__v -activate ");
+        .select("-_id -__v -activate  ");
     res.send({
         retos,
     });
@@ -120,7 +128,6 @@ app.post("/ranking", async(req, res) => {
     res.send({ ranking });
 });
 
-app.post("/deals", (req, res) => {});
 app.post("/moviecreate", async(req, res) => {
     let body = req.body;
     let newmovie = new moviesSchema(body);
