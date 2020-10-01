@@ -7,17 +7,10 @@ const mongoose = require("mongoose");
 
 //5 para este ejemplo vamos a crear usuarios automaticamente por lo que importamos el modelo de usuarios
 
-const deal = require("../models/Deals");
-const funtremdom = require("../functions/ramdom");
+const User = require("../models/Trivials");
+const aleatorio = require("../functions/ramdom");
 
 mongoose.Promise = global.Promise;
-/*
-    name: { type: String, require: true },
-    description: { type: String, default: "Este reto no tiene descripcion" },
-    image: { type: String, require: true },
-    activate: { type: Boolean, default: true },
-    award: { type: String, default: "3 puntos + 1 palicula" },
-*/
 
 mongoose
     .connect("mongodb://localhost:27017/movis", {
@@ -26,19 +19,31 @@ mongoose
     })
     .then(async() => {
         //4 hacemos lo que queramos
+        /*
+                                    question: { type: String, require: true },
+                            type: { type: String, default: "BackendDeen" },
+                            ansews: [{ type: String }],
+                            activate: { type: Boolean, require: true },
+                            lastPlay: { type: Number, default: Date.now() },
+                                */
 
-        for (var i = 1; i < 101; i++) {
-            let newDeal = new deal({
-                name: `trivial ${i}`,
-                description: `juege el trivial ${i}`,
-                image: "https://www.google.com",
-                activate: funtremdom.getRandomArbitrary(0, 2),
-                award: `${i + 1} puntos`,
-                urlHtml: "https://view.genial.ly/5eeb62fa52b9a00d905b86ad/game-trivial-aoo",
+        for (var i = 1; i < 100; i++) {
+            let newUser = new User({
+                question: `quen es pepe ${i}`,
+                type: "insomnia",
+                ansews: ["a", "b", "c", "d"],
+                activate: aleatorio.getRandomArbitrary(0, 2),
+                correct: aleatorio.getRandomArbitrary(0, 5),
             });
 
-            await newDeal.save();
-            console.log(newDeal.name, newDeal.description, newDeal.DateCreate);
+            let name = newUser.question;
+            let pointis = newUser.ansews;
+
+            console.log(name);
+            console.log(pointis);
+            console.log();
+
+            await newUser.save();
         }
 
         console.log("Proceso de creación de usuarios terminada");

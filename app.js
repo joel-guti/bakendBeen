@@ -2,6 +2,7 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
+const loan = require("./functions/loam");
 
 //Usuario : JoelGutiGuti password :
 
@@ -34,7 +35,7 @@ const moviesSchema = require("./models/Movies");
 const userSchema = require("./models/User");
 const dealSchema = require("./models/Deals");
 const helper = require("./models/HelpContact");
-
+const trivial = require("./models/Trivials.js");
 app.get("/helper", async(req, res) => {
     let query = req.query;
 
@@ -57,6 +58,48 @@ app.get("/helper", async(req, res) => {
         ayudantes,
     });
 });
+app.post("/loan", async(req, res) => {
+    let body = req.body;
+    let usermail = body.email;
+    let message = "Se conciedio el prestamo de 100 pts a " + usermail;
+
+    loan.solicitLoan(usermail);
+    res.send({
+        ok: true,
+        message,
+    });
+});
+app.get("/trivils", async(req, res) => {
+    trivial.findRandom({ activate: true }, { lastPlay: 0 }, { limit: 6 },
+        function(err, trivias) {
+            if (err || !trivias) {
+                return res.status(401).send({ success: false });
+            }
+
+            res.status(200).send({ success: true, trivias });
+            trivias.lastPlay = Date.now;
+        }
+    );
+
+    /*
+                        let trivialfind = await trivial.find({ activate: true });
+                        if (trivialfind == null) {
+                            let message = "No hay trivials activos";
+                            res.status(404).send({
+                                ok: false,
+                                message,
+                            });
+
+                            console.log("no hay trivials activos");
+                        } else {
+                            res.send({
+                                ok: true,
+                                trivialfind,
+                            });
+                        }
+                        */
+});
+
 app.get("/id", async(req, res) => {
     let findId = await userSchema.find().select("_id username email");
     console.log(findId);
@@ -99,6 +142,8 @@ app.post("/usercreate", async(req, res) => {
 app.post("/login", async(req, res) => {
     let body = req.body;
     let newuser = await userSchema.findOne(body).select(" -_id email password");
+    newuser.DateUpload = Date.now();
+
     res.send({
         ok: true,
         newuser,
@@ -122,6 +167,7 @@ app.get("/user", async(req, res) => {
         user,
     });
 });
+
 app.post("/ranking", async(req, res) => {
     let ranking = await userSchema.find().sort({ points: -1 });
 

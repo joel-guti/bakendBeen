@@ -12,4 +12,5 @@ const movieShema = Schema({
     trailerurl: { type: String, require: true },
     actors: { type: String },
 });
+
 module.exports = mongoose.model("Movie", movieShema);

@@ -5,6 +5,7 @@ const userSchema = Schema({
     username: { type: String, default: "user" },
     email: { type: String, unique: true },
     password: { type: String, require: true },
-    points: { type: Number },
+    points: { type: Number, default: 0 },
+    DateUpload: { type: Number, default: Date.now() },
 });
 module.exports = mongoose.model("User", userSchema);
