@@ -11,5 +11,6 @@ const triviaslSchema = Schema({
     lastPlay: { type: Number, default: Date.now() },
     correct: { type: Number },
 });
+
 triviaslSchema.plugin(ramdom);
 module.exports = mongoose.model("trivial", triviaslSchema);

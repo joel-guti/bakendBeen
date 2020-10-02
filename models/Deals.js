@@ -9,6 +9,7 @@ const dealschema = Schema({
     activate: { type: Boolean, default: true },
     award: { type: String },
     urlHtml: { type: String },
+    players: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
 module.exports = mongoose.model("Deal", dealschema);

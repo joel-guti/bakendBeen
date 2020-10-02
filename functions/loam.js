@@ -7,16 +7,14 @@ mongoose
     })
     .then(() => {
         //ponemos a escuchar el servidor
-        app.listen(3000, () => {
-            console.log("escuchando");
-        });
+       console.log("object")
     })
     .catch((err) => {
         console.log("error al conectar con mongo");
     });
 
 async function solicitLoan(userMail) {
-    let userSolicit = await usuarios.find({
+    let userSolicit = await usuarios.findOne({
         email: userMail,
     });
     userSolicit.points = points + 100;

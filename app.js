@@ -29,6 +29,7 @@ mongoose
     })
     .catch((err) => {
         console.log("error al conectar con mongo");
+        console.log(err3);
     });
 //Modelos
 const moviesSchema = require("./models/Movies");
@@ -36,6 +37,7 @@ const userSchema = require("./models/User");
 const dealSchema = require("./models/Deals");
 const helper = require("./models/HelpContact");
 const trivial = require("./models/Trivials.js");
+const User = require("./models/User");
 app.get("/helper", async(req, res) => {
     let query = req.query;
 
@@ -58,19 +60,70 @@ app.get("/helper", async(req, res) => {
         ayudantes,
     });
 });
+app.get("/", (req, res) => {});
 app.post("/loan", async(req, res) => {
     let body = req.body;
     let usermail = body.email;
     let message = "Se conciedio el prestamo de 100 pts a " + usermail;
+    let userSolicit = await usuarios.findOne({
+        email: userMail,
+    });
+    userSolicit.points = points + 100;
+    console.log("se concedio el prestamo de 100 monedas");
 
-    loan.solicitLoan(usermail);
     res.send({
         ok: true,
         message,
     });
+    console.log();
 });
+app.post("/addfriends", async(req, res) => {
+    let body = req.body;
+    let userId = body.userid;
+    let friendId = body.friendid;
+
+    let user = await User.findById(userId);
+    let friend = await User.findById(userId);
+
+    if (!user) {
+        return res.status(401).send({ success: false });
+    }
+
+    if (!friend) {
+        return res.status(401).send({ success: false });
+    }
+
+    if (!user.friends) {
+        user.friends = [];
+    }
+
+    user.friends.push(friend._id);
+
+    await user.save();
+
+    res.status(200).send({ success: true });
+});
+
+app.post("/singin", async(req, res) => {
+    let body = req.body;
+
+    try {
+        let newUser = await userSchema.create(body);
+
+        res.send({
+            ok: true,
+            newUser,
+        });
+
+    } catch (err) {
+
+        res.status(401).send({ success: false, mensaje: 'el usuario ya existe' })
+    }
+
+});
+
 app.get("/trivils", async(req, res) => {
-    trivial.findRandom({ activate: true }, { lastPlay: 0 }, { limit: 6 },
+    trivial.findRandom({ activate: true }, { lastPlay: 0, activate: 0 }, { limit: 6 },
         function(err, trivias) {
             if (err || !trivias) {
                 return res.status(401).send({ success: false });
@@ -82,22 +135,22 @@ app.get("/trivils", async(req, res) => {
     );
 
     /*
-                        let trivialfind = await trivial.find({ activate: true });
-                        if (trivialfind == null) {
-                            let message = "No hay trivials activos";
-                            res.status(404).send({
-                                ok: false,
-                                message,
-                            });
+                                                                            let trivialfind = await trivial.find({ activate: true });
+                                                                            if (trivialfind == null) {
+                                                                                let message = "No hay trivials activos";
+                                                                                res.status(404).send({
+                                                                                    ok: false,
+                                                                                    message,
+                                                                                });
 
-                            console.log("no hay trivials activos");
-                        } else {
-                            res.send({
-                                ok: true,
-                                trivialfind,
-                            });
-                        }
-                        */
+                                                                                console.log("no hay trivials activos");
+                                                                            } else {
+                                                                                res.send({
+                                                                                    ok: true,
+                                                                                    trivialfind,
+                                                                                });
+                                                                            }
+                                                                            */
 });
 
 app.get("/id", async(req, res) => {
@@ -128,21 +181,31 @@ app.get("/deals", async(req, res) => {
         retos,
     });
 });
-//app.post();
-app.post("/usercreate", async(req, res) => {
-    let body = req.body;
-    let newuser = await userSchema.create(body);
+app.post("/playdeals", async(req, res) => {
+    let reto = await dealSchema
+        .find({ activate: true, name: req.body.name })
+        .select("-_id -__v -activate  ");
+    let id = req.body.idPlayer;
+    reto.players = id;
+
     res.send({
-        ok: true,
-        newuser,
+        reto,
     });
-    newuser.save();
-    console.log(newuser);
+});
+//app.post();
+app.post("/register", async(req, res) => {
+    let body = req.body;
+
+    let email = body.email;
+    let password = req.password;
+
+    let newuser = userSchema.create({ email: email, password: password });
+    console.log("");
 });
 app.post("/login", async(req, res) => {
     let body = req.body;
     let newuser = await userSchema.findOne(body).select(" -_id email password");
-    newuser.DateUpload = Date.now();
+    //  newuser.DateUpload = Date.now();
 
     res.send({
         ok: true,

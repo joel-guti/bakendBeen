@@ -26,6 +26,7 @@ mongoose
     })
     .then(async() => {
         //4 hacemos lo que queramos
+        let d
 
         for (var i = 1; i < 101; i++) {
             let newDeal = new deal({
