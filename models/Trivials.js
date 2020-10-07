@@ -10,7 +10,9 @@ const triviaslSchema = Schema({
     activate: { type: Boolean, require: true },
     lastPlay: { type: Number, default: Date.now() },
     correct: { type: Number },
+    //deal: {},
+    deals: [{ type: Schema.Types.ObjectId, ref: 'Deal' }]
 });
 
 triviaslSchema.plugin(ramdom);
-module.exports = mongoose.model("trivial", triviaslSchema);
+module.exports = mongoose.model("Trivial", triviaslSchema);

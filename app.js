@@ -36,8 +36,55 @@ const moviesSchema = require("./models/Movies");
 const userSchema = require("./models/User");
 const dealSchema = require("./models/Deals");
 const helper = require("./models/HelpContact");
-const trivial = require("./models/Trivials.js");
-const User = require("./models/User");
+const trivial = require("./models/Trivials");
+const storeiten = require("./models/Store");
+
+app.post("/storecreate", async(req, res) => {
+    let body = req.body;
+    let newStore = await storeiten.create(body);
+    res.send({ success: true, newStore });
+
+});
+app.post("/store", async(req, res) => {
+    let body = req.body;
+    let idUser = body.idUser
+    let query = req.query;
+
+    let elementos = parseInt(query.elementos);
+
+    let skip = elementos * query.pagina;
+    //http://192.168.1.43:3000/helper?elementos=5&skip=2
+    //o
+    //http://192.168.1.43:3000/helper
+
+    console.log(query);
+
+    let store = await storeiten.find().limit(elementos).skip(skip);
+    res.send({ success: true, store });
+});
+app.post("/paystore", async(req, res) => {
+    let body = req.body;
+    let id = body.id;
+    let myid = body.myid;
+    let storeapp = await storeiten.findById(id).select("");
+    let user = await userSchema.findById(myid);
+    if (!user) {
+        return res.send({ success: false, message: "este usuario no existe" });
+    }
+    if (!storeapp) {
+        return res.send({
+            success: false,
+            message: "no hay productios en la tienda",
+        });
+    }
+    let beens = user.beens;
+    let pricing = storeapp.pricing;
+    if (beens <= 0) {
+        return res.send({ success: false, message: "no tienes beens" });
+    }
+    beens = beens - pricing;
+});
+
 app.get("/helper", async(req, res) => {
     let query = req.query;
 
@@ -82,14 +129,20 @@ app.post("/addfriends", async(req, res) => {
     let userId = body.userid;
     let friendId = body.friendid;
 
-    let user = await User.findById(userId);
-    let friend = await User.findById(userId);
+    console.log(userId);
+    console.log(friendId);
 
+    let user = await User.findById(userId);
+    let friend = await User.findById(friendId);
+
+    //sistema de autentificaccio :
     if (!user) {
+        console.log("este usuaro no existe");
         return res.status(401).send({ success: false });
     }
 
     if (!friend) {
+        console.log("este amigo no existe");
         return res.status(401).send({ success: false });
     }
 
@@ -97,29 +150,60 @@ app.post("/addfriends", async(req, res) => {
         user.friends = [];
     }
 
+    if (user.id == friend) {
+        return res.send({
+            ok: false,
+            message: "este usuario eres tu!",
+        });
+    }
+
+    if (user.friends == friend) {
+        return res.send({ ok: false, message: "este usuaro ye es tu amifo" });
+    }
     user.friends.push(friend._id);
 
     await user.save();
 
     res.status(200).send({ success: true });
+    console.log("se hizo un amigp");
 });
 
+app.post("/getCode", async(req, res) => {
+    let body = req.body;
+    let mail = body.email;
+    let getCode = await userSchema
+        .findOne({ email: mail })
+        .select("username _id -__v");
+    res.send({ ok: true, getCode });
+});
 app.post("/singin", async(req, res) => {
     let body = req.body;
 
     try {
         let newUser = await userSchema.create(body);
 
+        newUser.__v = undefined;
+
         res.send({
             ok: true,
             newUser,
         });
-
     } catch (err) {
-
-        res.status(401).send({ success: false, mensaje: 'el usuario ya existe' })
+        console.log(err);
+        res.status(401).send({ success: false, mensaje: "el usuario ya existe" });
     }
+});
 
+app.post("/changePassword", async(req, res) => {
+    let body = req.body;
+    let id = body.id;
+    let passwordnew = body.newpass;
+
+    let user = await userSchema.findByIdAndUpdate({ _id: id }, { password: passwordnew }, { new: true });
+    res.status(200).send({
+        success: true,
+        user,
+    });
 });
 
 app.get("/trivils", async(req, res) => {
@@ -135,22 +219,22 @@ app.get("/trivils", async(req, res) => {
     );
 
     /*
-                                                                            let trivialfind = await trivial.find({ activate: true });
-                                                                            if (trivialfind == null) {
-                                                                                let message = "No hay trivials activos";
-                                                                                res.status(404).send({
-                                                                                    ok: false,
-                                                                                    message,
-                                                                                });
+                                                                                                                let trivialfind = await trivial.find({ activate: true });
+                                                                                                                if (trivialfind == null) {
+                                                                                                                    let message = "No hay trivials activos";
+                                                                                                                    res.status(404).send({
+                                                                                                                        ok: false,
+                                                                                                                        message,
+                                                                                                                    });
 
-                                                                                console.log("no hay trivials activos");
-                                                                            } else {
-                                                                                res.send({
-                                                                                    ok: true,
-                                                                                    trivialfind,
-                                                                                });
-                                                                            }
-                                                                            */
+                                                                                                                    console.log("no hay trivials activos");
+                                                                                                                } else {
+                                                                                                                    res.send({
+                                                                                                                        ok: true,
+                                                                                                                        trivialfind,
+                                                                                                                    });
+                                                                                                                }
+                                                                                                                */
 });
 
 app.get("/id", async(req, res) => {
@@ -234,6 +318,13 @@ app.get("/user", async(req, res) => {
 app.post("/ranking", async(req, res) => {
     let ranking = await userSchema.find().sort({ points: -1 });
 
+    if (!ranking) {
+        return res.send({
+            success: false,
+            message: "no hay usuarios",
+        });
+    }
+
     res.send({ ranking });
 });
 
@@ -242,12 +333,11 @@ app.post("/moviecreate", async(req, res) => {
     let newmovie = new moviesSchema(body);
 
     await newmovie.save();
-    let id = newmovie.id;
 
     res.send({
         ok: true,
         name: newmovie.name,
-        id: id,
+        id: newmovie.id,
     });
 
     console.log(`_id : "${id}"`);
@@ -276,4 +366,5 @@ app.get("/movies", async(req, res) => {
     });
 });
 
+module.exports = app;
 module.exports = app;
