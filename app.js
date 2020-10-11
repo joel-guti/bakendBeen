@@ -2,6 +2,10 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
+
+
+require('./config')
+
 //const loan = require("./functions/loam");
 
 //Usuario : JoelGutiGuti password :
@@ -16,19 +20,15 @@ app.use(bodyparser.urlencoded({ extended: true }));
 mongoose.Promise = global.Promise;
 //conectamos con la base de datos, usando la funcion connect, como parametro metelos la url de conexión, que si local sera en localhost etc.EL then es lo que ocurre si la conexion es correcta, y el catch, es una función que se ejecuta si sucede algun error. Para pruebas en local, obviamente primero hay que lanzar mongo con mongod en un terminal
 
-let mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/movis"
-let port = process.env.PORT || 3000
-
-console.log(mongoUri)
 
 mongoose
-    .connect(mongoUri, {
+    .connect(process.env.MONGO_URI, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
     })
     .then(() => {
         //ponemos a escuchar el servidor
-        app.listen(port, () => {
+        app.listen(process.env.PORT, () => {
             console.log("escuchando");
         });
     })

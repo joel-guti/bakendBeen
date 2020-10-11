@@ -3,6 +3,8 @@
 //2 conectamos con mongo
 const mongoose = require("mongoose");
 
+require('./config')
+
 //3 conectamos con mongo como siempre, usando mongodb, las opciones (useUnifiedTopology,useNewUrlParser) y luego el then para cuando es ok la conexión y el catch para cuando falla
 
 //5 para este ejemplo vamos a crear usuarios automaticamente por lo que importamos el modelo de usuarios
@@ -20,7 +22,7 @@ mongoose.Promise = global.Promise;
 */
 
 mongoose
-    .connect("mongodb://localhost:27017/movis", {
+    .connect(process.env.MONGO_URI, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
     })
