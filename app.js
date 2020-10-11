@@ -33,7 +33,7 @@ mongoose
     })
     .catch((err) => {
         console.log("error al conectar con mongo");
-        console.log(err3);
+        console.log(err);
     });
 //Modelos
 const moviesSchema = require("./models/Movies");
