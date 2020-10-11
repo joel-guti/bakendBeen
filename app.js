@@ -43,11 +43,10 @@ app.post("/storecreate", async(req, res) => {
     let body = req.body;
     let newStore = await storeiten.create(body);
     res.send({ success: true, newStore });
-
 });
 app.post("/store", async(req, res) => {
     let body = req.body;
-    let idUser = body.idUser
+    let idUser = body.idUser;
     let query = req.query;
 
     let elementos = parseInt(query.elementos);
@@ -62,12 +61,19 @@ app.post("/store", async(req, res) => {
     let store = await storeiten.find().limit(elementos).skip(skip);
     res.send({ success: true, store });
 });
+app.post("/comfirmUser", async(req, res) => {
+    let body = req.body;
+    let id = body.id;
+    let user = await userSchema.findById(id);
+    res.send({ success: true, user });
+});
 app.post("/paystore", async(req, res) => {
     let body = req.body;
     let id = body.id;
     let myid = body.myid;
-    let storeapp = await storeiten.findById(id).select("");
+    let storeapp = await storeiten.findById(id);
     let user = await userSchema.findById(myid);
+
     if (!user) {
         return res.send({ success: false, message: "este usuario no existe" });
     }
@@ -77,11 +83,19 @@ app.post("/paystore", async(req, res) => {
             message: "no hay productios en la tienda",
         });
     }
+    if (storeapp.activate == false) {
+        return res.send({
+            success: false,
+            message: "no hay ningun produicto activado con ese ID",
+        });
+    }
     let beens = user.beens;
     let pricing = storeapp.pricing;
-    if (beens <= 0) {
+
+    if (beens < pricing) {
         return res.send({ success: false, message: "no tienes beens" });
     }
+
     beens = beens - pricing;
 });
 
@@ -115,7 +129,7 @@ app.post("/loan", async(req, res) => {
     let userSolicit = await usuarios.findOne({
         email: userMail,
     });
-    userSolicit.points = points + 100;
+    userSolicit.beens = beens + 150;
     console.log("se concedio el prestamo de 100 monedas");
 
     res.send({
@@ -183,6 +197,7 @@ app.post("/singin", async(req, res) => {
         let newUser = await userSchema.create(body);
 
         newUser.__v = undefined;
+        newUser.friends = undefined;
 
         res.send({
             ok: true,
@@ -219,22 +234,22 @@ app.get("/trivils", async(req, res) => {
     );
 
     /*
-                                                                                                                let trivialfind = await trivial.find({ activate: true });
-                                                                                                                if (trivialfind == null) {
-                                                                                                                    let message = "No hay trivials activos";
-                                                                                                                    res.status(404).send({
-                                                                                                                        ok: false,
-                                                                                                                        message,
-                                                                                                                    });
+                                                                                                                    let trivialfind = await trivial.find({ activate: true });
+                                                                                                                    if (trivialfind == null) {
+                                                                                                                        let message = "No hay trivials activos";
+                                                                                                                        res.status(404).send({
+                                                                                                                            ok: false,
+                                                                                                                            message,
+                                                                                                                        });
 
-                                                                                                                    console.log("no hay trivials activos");
-                                                                                                                } else {
-                                                                                                                    res.send({
-                                                                                                                        ok: true,
-                                                                                                                        trivialfind,
-                                                                                                                    });
-                                                                                                                }
-                                                                                                                */
+                                                                                                                        console.log("no hay trivials activos");
+                                                                                                                    } else {
+                                                                                                                        res.send({
+                                                                                                                            ok: true,
+                                                                                                                            trivialfind,
+                                                                                                                        });
+                                                                                                                    }
+                                                                                                                    */
 });
 
 app.get("/id", async(req, res) => {

@@ -1,4 +1,4 @@
-Hola, para instalar todas las sibrerias abre el terminal y pon :
+Hola, para instalar todas las librerias abre el terminal y pon :
 
 ```
 npm install
