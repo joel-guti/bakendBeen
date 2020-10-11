@@ -16,14 +16,18 @@ app.use(bodyparser.urlencoded({ extended: true }));
 mongoose.Promise = global.Promise;
 //conectamos con la base de datos, usando la funcion connect, como parametro metelos la url de conexión, que si local sera en localhost etc.EL then es lo que ocurre si la conexion es correcta, y el catch, es una función que se ejecuta si sucede algun error. Para pruebas en local, obviamente primero hay que lanzar mongo con mongod en un terminal
 
+let mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/movis"
+let port = process.env.PORT || 3000
+
+
 mongoose
-    .connect("mongodb://localhost:27017/movis", {
+    .connect(mongoUri, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
     })
     .then(() => {
         //ponemos a escuchar el servidor
-        app.listen(3000, () => {
+        app.listen(port, () => {
             console.log("escuchando");
         });
     })
