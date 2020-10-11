@@ -2,7 +2,7 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
-const loan = require("./functions/loam");
+//const loan = require("./functions/loam");
 
 //Usuario : JoelGutiGuti password :
 
