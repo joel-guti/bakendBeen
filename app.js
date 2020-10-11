@@ -19,6 +19,7 @@ mongoose.Promise = global.Promise;
 let mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/movis"
 let port = process.env.PORT || 3000
 
+console.log(mongoUri)
 
 mongoose
     .connect(mongoUri, {
