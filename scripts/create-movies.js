@@ -35,7 +35,6 @@ mongoose
         for (var i = 1; i < 101; i++) {
             let newUser = new movie({
                 titele: `La vecina ${i}`,
-                poster: { type: String },
                 director: `Paco Mirella ${i}`,
                 duration: 100,
                 thumb: "https://firebasestorage.googleapis.com/v0/b/donext-collections.appspot.com/o/5a27cdfd52b1cc0d022e6d5c.png?alt=media&token=c36d784b-0671-4bb5-ba95-c34fe38c9488",
