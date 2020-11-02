@@ -8,7 +8,7 @@ const movieShema = Schema({
     director: { type: String, require: true },
     premiere: { type: Number, default: Date.now() },
     thumb: { type: String },
-    acticate: { type: Boolean, default: true },
+    activate: { type: Boolean, default: true },
     budget: { type: Number, defaut: 300 },
     duration: { type: String, require: true },
     trailerurl: { type: String, require: true },

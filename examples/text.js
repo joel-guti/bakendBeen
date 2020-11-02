@@ -3,6 +3,8 @@ const bodyparser = require("body-parser");
 const app = express();
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
+const ramdom = require('../functions/ramdom');
+require("..")
 
 app.post("/text", (req, res) => {
     function json() {
@@ -21,3 +23,6 @@ app.post("/text", (req, res) => {
     });
     json();
 });
+
+
+app.post("")

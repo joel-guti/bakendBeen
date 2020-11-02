@@ -7,6 +7,7 @@ const userSchema = Schema({
     password: { type: String, require: true },
     points: { type: Number, default: 0 },
     beeen: { type: Number, default: 0 },
+    dealsPending: [{ type: Schema.Types.ObjectId, ref: "Deal" }],
     DateUpload: { type: Number, default: Date.now() },
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
 

@@ -8,7 +8,7 @@ require('./config')
 //5 para este ejemplo vamos a crear usuarios automaticamente por lo que importamos el modelo de usuarios
 
 const User = require("../models/Store");
-const aleatorio = require("../functions/ramdom");
+
 const ramdom = require("../functions/ramdom");
 
 mongoose.Promise = global.Promise;

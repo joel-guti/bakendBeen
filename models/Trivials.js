@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const ramdom = require("mongoose-simple-random");
+
 const Schema = mongoose.Schema;
 // MIRAR CON PAPA LO DE LOS ALEATORIOS
 
@@ -10,6 +11,7 @@ const triviaslSchema = Schema({
     activate: { type: Boolean, require: true },
     lastPlay: { type: Number, default: Date.now() },
     correct: { type: Number },
+    movie: { type: Schema.type.ObjectId, ref: "Movie" },
     //deal: {},
     deals: [{ type: Schema.Types.ObjectId, ref: 'Deal' }]
 });

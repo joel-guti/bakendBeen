@@ -43,6 +43,7 @@ const dealSchema = require("./models/Deals");
 const helper = require("./models/HelpContact");
 const trivial = require("./models/Trivials");
 const storeiten = require("./models/Store");
+require("./functions/ramdom")
 
 app.post("/storecreate", async(req, res) => {
     let body = req.body;
@@ -104,7 +105,7 @@ app.post("/paystore", async(req, res) => {
     beens = beens - pricing;
 });
 
-app.get("/helper", async(req, res) => {
+app.post("/helper", async(req, res) => {
     let query = req.query;
 
     let elementos = parseInt(query.elementos);
@@ -238,24 +239,24 @@ app.get("/trivils", async(req, res) => {
         }
     );
 
-    /*
-                                                                                                                    let trivialfind = await trivial.find({ activate: true });
-                                                                                                                    if (trivialfind == null) {
-                                                                                                                        let message = "No hay trivials activos";
-                                                                                                                        res.status(404).send({
-                                                                                                                            ok: false,
-                                                                                                                            message,
-                                                                                                                        });
+    let trivialfind = await trivial.find({ activate: true });
+    if (trivialfind == null) {
+        let message = "No hay trivials activos";
+        res.status(404).send({
+            ok: false,
+            message,
+        });
 
-                                                                                                                        console.log("no hay trivials activos");
-                                                                                                                    } else {
-                                                                                                                        res.send({
-                                                                                                                            ok: true,
-                                                                                                                            trivialfind,
-                                                                                                                        });
-                                                                                                                    }
-                                                                                                                    */
+        console.log("no hay trivials activos");
+    } else {
+        res.send({
+            ok: true,
+            trivialfind,
+        });
+    }
+
 });
+
 
 app.get("/id", async(req, res) => {
     let findId = await userSchema.find().select("_id username email");
@@ -385,6 +386,3 @@ app.get("/movies", async(req, res) => {
         movies,
     });
 });
-
-module.exports = app;
-module.exports = app;
