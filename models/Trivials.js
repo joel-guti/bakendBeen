@@ -11,7 +11,7 @@ const triviaslSchema = Schema({
     activate: { type: Boolean, require: true },
     lastPlay: { type: Number, default: Date.now() },
     correct: { type: Number },
-    movie: { type: Schema.type.ObjectId, ref: "Movie" },
+    movie: { type: Schema.Types.ObjectId, ref: "Movie" },
     //deal: {},
     deals: [{ type: Schema.Types.ObjectId, ref: 'Deal' }]
 });

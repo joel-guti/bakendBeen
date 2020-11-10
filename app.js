@@ -291,7 +291,11 @@ app.post("/playdeals", async(req, res) => {
         .find({ activate: true, name: req.body.name })
         .select("-_id -__v -activate  ");
     let id = req.body.idPlayer;
-    reto.players = id;
+    let userid = await userSchema.findById(id)
+
+
+    //reto.friends.push(friend._id);
+    reto.players.push({ players: userid })
 
     res.send({
         reto,
