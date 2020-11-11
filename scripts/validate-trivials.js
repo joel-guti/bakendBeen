@@ -34,7 +34,7 @@ mongoose
             }
             Trivials.validation = true
 
-            await newUser.save();
+            await Trivials.save();
         }
 
         console.log("Proceso de creación de usuarios terminada");
