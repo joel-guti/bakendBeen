@@ -11,7 +11,8 @@
         "retos": "node ./scripts/create-deals",
         "helpers": "node ./scripts/create-helper",
         "trivial": "node ./scripts/create-trivials",
-        "store": "node ./scripts/create-store"
+        "validateTrivials": "node ./scripts/validate-trivials"
+
     },
     "author": "Movis Enpanor and Joel Gutierrez",
     "license": "ISC",

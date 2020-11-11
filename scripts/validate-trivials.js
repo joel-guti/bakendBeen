@@ -27,22 +27,12 @@ mongoose
                             lastPlay: { type: Number, default: Date.now() },
                                 */
 
-        for (var i = 1; i < 100; i++) {
-            let newUser = new User({
-                question: `quen es pepe ${i}`,
-                type: "insomnia",
-                ansews: ["a", "b", "c", "d"],
-                activate: aleatorio.getRandomArbitrary(0, 2),
-                validation: true,
-                correct: aleatorio.getRandomArbitrary(0, 5),
-            });
-
-            let name = newUser.question;
-            let pointis = newUser.ansews;
-
-            console.log(name);
-            console.log(pointis);
-            console.log();
+        for (var i = 1; i < 50; i++) {
+            let Trivials = await User.findOne({ validation: false })
+            if (!Trivials) {
+                process.exit(0);
+            }
+            Trivials.validation = true
 
             await newUser.save();
         }

@@ -235,6 +235,9 @@ app.post("/trivias", async(req, res) => {
     trivial.findRandom({ activate: true, validation: true }, { lastPlay: 0, activate: 0 }, { limit: 6 },
         function(err, trivias) {
             if (err || !trivias) {
+                console.log('no hay trivias');
+                console.log(err)
+                console.log(trivias)
                 return res.status(401).send({ success: false });
             }
 
@@ -256,7 +259,19 @@ app.post("/trivials/pendingvalidate", async(req, res) => {
 app.post("/trivials/validate", async(req, res) => {
     let body = req.body
     let id = body.trivialid
-    let trivial = await userSchema.findByIdAndUpdate({ _id: id }, { validation: true }, { new: true });
+    let trivial = await userSchema.findById(id)
+
+
+    if (!trivial) {
+
+        console.log('no se encuentra el trivla')
+        return res.status(401).send({ success: false })
+    }
+
+    trivial.validation = true
+
+    trivial.save();
+
     console.log(trivial)
 
     res.send({ success: true })
