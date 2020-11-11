@@ -13,7 +13,9 @@ const triviaslSchema = Schema({
     correct: { type: Number },
     movie: { type: Schema.Types.ObjectId, ref: "Movie" },
     //deal: {},
-    deals: [{ type: Schema.Types.ObjectId, ref: 'Deal' }]
+    deals: [{ type: Schema.Types.ObjectId, ref: 'Deal' }],
+    validate: { type: Boolean, default: false }
+
 });
 
 triviaslSchema.plugin(ramdom);

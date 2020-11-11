@@ -43,11 +43,15 @@ const dealSchema = require("./models/Deals");
 const helper = require("./models/HelpContact");
 const trivial = require("./models/Trivials");
 const storeiten = require("./models/Store");
+const Trivials = require("./models/Trivials");
 require("./functions/ramdom")
 
 app.post("/storecreate", async(req, res) => {
     let body = req.body;
+    let myid = body.myid;
     let newStore = await storeiten.create(body);
+    // Hacer lo de el credor : newStore.creator = myid
+    newStore.creator = myid
     res.send({ success: true, newStore });
 });
 app.post("/store", async(req, res) => {
@@ -228,7 +232,7 @@ app.post("/changePassword", async(req, res) => {
 });
 
 app.get("/trivils", async(req, res) => {
-    trivial.findRandom({ activate: true }, { lastPlay: 0, activate: 0 }, { limit: 6 },
+    trivial.findRandom({ activate: true, validate: true }, { lastPlay: 0, activate: 0 }, { limit: 6 },
         function(err, trivias) {
             if (err || !trivias) {
                 return res.status(401).send({ success: false });
@@ -256,6 +260,20 @@ app.get("/trivils", async(req, res) => {
     }
 
 });
+app.post("/trivials/pendingvalidate", async(req, res) => {
+    let thejenn = await Trivials.find({ validate: false })
+    res.send({
+        thejenn
+    })
+})
+app.post("/trivials/validate", async(req, res) => {
+    let body = req.body
+    let id = body.trivialid
+    let trivial = await userSchema.findByIdAndUpdate({ _id: id }, { validate: true }, { new: true });
+    console.log(trivial)
+
+    res.send({ success: true })
+})
 
 
 app.get("/id", async(req, res) => {
@@ -372,6 +390,7 @@ app.post("/findmovie", async(req, res) => {
     let body = req.body;
     let movie = await moviesSchema.find({
         titele: body.titele.toLowerCase(),
+        activate: true
     });
     res.send({
         ok: true,
@@ -383,7 +402,7 @@ app.post("/findmovie", async(req, res) => {
 });
 
 app.get("/movies", async(req, res) => {
-    let movies = await moviesSchema.find().select("-_id -__v ");
+    let movies = await moviesSchema.find({ activate: true }).select("-_id -__v ");
     console.log(movies);
     res.send({
         ok: true,
