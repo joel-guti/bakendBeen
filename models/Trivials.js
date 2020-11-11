@@ -14,7 +14,7 @@ const triviaslSchema = Schema({
     movie: { type: Schema.Types.ObjectId, ref: "Movie" },
     //deal: {},
     deals: [{ type: Schema.Types.ObjectId, ref: 'Deal' }],
-    validate: { type: Boolean, default: false }
+    validation: { type: Boolean, default: false }
 
 });
 

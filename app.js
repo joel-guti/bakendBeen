@@ -231,8 +231,8 @@ app.post("/changePassword", async(req, res) => {
     });
 });
 
-app.get("/trivils", async(req, res) => {
-    trivial.findRandom({ activate: true, validate: true }, { lastPlay: 0, activate: 0 }, { limit: 6 },
+app.post("/trivias", async(req, res) => {
+    trivial.findRandom({ activate: true, validation: true }, { lastPlay: 0, activate: 0 }, { limit: 6 },
         function(err, trivias) {
             if (err || !trivias) {
                 return res.status(401).send({ success: false });
@@ -240,28 +240,15 @@ app.get("/trivils", async(req, res) => {
 
             res.status(200).send({ success: true, trivias });
             trivias.lastPlay = Date.now;
+
+
+
         }
     );
 
-    let trivialfind = await trivial.find({ activate: true });
-    if (trivialfind == null) {
-        let message = "No hay trivials activos";
-        res.status(404).send({
-            ok: false,
-            message,
-        });
-
-        console.log("no hay trivials activos");
-    } else {
-        res.send({
-            ok: true,
-            trivialfind,
-        });
-    }
-
 });
 app.post("/trivials/pendingvalidate", async(req, res) => {
-    let thejenn = await Trivials.find({ validate: false })
+    let thejenn = await Trivials.find({ validation: false })
     res.send({
         thejenn
     })
@@ -269,7 +256,7 @@ app.post("/trivials/pendingvalidate", async(req, res) => {
 app.post("/trivials/validate", async(req, res) => {
     let body = req.body
     let id = body.trivialid
-    let trivial = await userSchema.findByIdAndUpdate({ _id: id }, { validate: true }, { new: true });
+    let trivial = await userSchema.findByIdAndUpdate({ _id: id }, { validation: true }, { new: true });
     console.log(trivial)
 
     res.send({ success: true })
