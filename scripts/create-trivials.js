@@ -31,7 +31,7 @@ mongoose
             let newUser = new User({
                 question: `quen es pepe ${i}`,
                 type: "insomnia",
-                ansews: ["a", "b", "c", "d"],
+                ansews: ["Cantante", "torero", "Youtuber", "Hostelero"],
                 activate: aleatorio.getRandomArbitrary(0, 2),
                 validation: true,
                 correct: aleatorio.getRandomArbitrary(0, 5),

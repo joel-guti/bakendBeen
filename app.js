@@ -265,8 +265,9 @@ app.post("/trivials/validate", async(req, res) => {
     if (!trivial) {
 
         console.log('no se encuentra el trivla')
-        return res.status(401).send({ success: false })
+        return res.status(401).send({ success: false, })
     }
+
 
     trivial.validation = true
 

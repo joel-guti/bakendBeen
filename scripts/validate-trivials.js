@@ -37,7 +37,7 @@ mongoose
             await Trivials.save();
         }
 
-        console.log("Proceso de creación de usuarios terminada");
+        console.log("Proceso terminado");
         process.exit(0);
     })
     .catch((err) => {
