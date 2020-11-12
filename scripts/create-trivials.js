@@ -33,7 +33,6 @@ mongoose
                 type: "insomnia",
                 ansews: ["Cantante", "torero", "Youtuber", "Hostelero"],
                 activate: aleatorio.getRandomArbitrary(0, 2),
-                validation: true,
                 correct: aleatorio.getRandomArbitrary(0, 5),
             });
 
